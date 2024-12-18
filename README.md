@@ -1,8 +1,8 @@
-# YueTai Backend
+# Travios Backend
 
 ## Description
 
-Backend service for YueTai
+Backend service for Travios
 
 ## Set up
 
@@ -41,7 +41,7 @@ Access `/swagger/index.html` on your local machine, you should see the swagger d
 
 ### Health check
 
-Access `/yuetai/health` on your local machine, you should see the json response
+Access `/travios/health` on your local machine, you should see the json response
 
 ## Troubleshooting
 

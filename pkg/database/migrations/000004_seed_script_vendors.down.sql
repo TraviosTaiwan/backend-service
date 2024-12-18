@@ -1,0 +1,2 @@
+DELETE FROM vendors WHERE id IN (1, 2, 3, 4);
+ALTER SEQUENCE vendors_id_seq RESTART WITH 1;

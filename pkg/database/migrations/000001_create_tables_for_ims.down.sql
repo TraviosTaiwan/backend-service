@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS customers;
+DROP TABLE IF EXISTS vendors;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS items;
+DROP TABLE IF EXISTS sale_orders;
+DROP TABLE IF EXISTS sale_order_items;
+DROP TABLE IF EXISTS purchase_orders;
+DROP TABLE IF EXISTS purchase_order_items;
+DROP TABLE IF EXISTS packages;

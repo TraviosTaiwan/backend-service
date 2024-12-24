@@ -22,18 +22,27 @@ func Serve(e *echo.Echo) {
 	categoryRepository := repositories.CategoryDBInstance(db)
 	vendorRepository := repositories.VendorDBInstance(db)
 	itemRepository := repositories.ItemDBInstance(db)
+	customerRepository := repositories.CustomerDBInstance(db)
+	saleOrderRepository := repositories.SaleOrderDBInstance(db)
+	saleOrderItemRepository := repositories.SaleOrderItemDBInstance(db)
 
 	// Services
 	authService := services.AuthServiceInstance(userRepository)
 	categoryService := services.CategoryServiceInstance(categoryRepository)
 	vendorService := services.VendorServiceInstance(vendorRepository)
 	itemService := services.ItemServiceInstance(itemRepository)
+	customerService := services.CustomerServiceInstance(customerRepository)
+	saleOrderService := services.SaleOrderServiceInstance(saleOrderRepository)
+	saleOrderItemService := services.SaleOrderItemServiceInstance(saleOrderItemRepository)
 
 	// Controllers
 	controllers.SetAuthService(authService)
 	controllers.SetCategoryService(categoryService)
 	controllers.SetVendorService(vendorService)
 	controllers.SetItemService(itemService)
+	controllers.SetCustomerService(customerService)
+	controllers.SetSaleOrderService(saleOrderService)
+	controllers.SetSaleOrderItemService(saleOrderItemService)
 	routes.InitRoutes(e)
 
 	log.Fatal(e.Start(fmt.Sprintf(":%s", config.LocalConfig.Port)))

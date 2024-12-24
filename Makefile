@@ -19,7 +19,7 @@ docker-up:
 
 docker-down:
 	@echo "Stopping Docker Compose services..."
-	@docker-compose --env-file app.env -f ./docker/docker-compose.yml down
+	@docker-compose --env-file app.env -f ./docker/docker-compose.yml down -v --rmi all
 
 migrate-run:
 	migrate -path pkg/database/migrations -database "$(DB_URI)" -verbose up

@@ -26,4 +26,7 @@ func InitRoutes(e *echo.Echo) {
 	CategoryRoutes(protected)
 	VendorRoutes(protected)
 	ItemRoutes(protected)
+	CustomerRoutes(protected)
+	SaleOrderRoutes(protected)
+	SaleOrderItemRoutes(protected)
 }

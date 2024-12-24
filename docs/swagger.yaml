@@ -51,6 +51,21 @@ definitions:
       name:
         type: string
     type: object
+  types.Customer:
+    properties:
+      address:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+      platform:
+        type: string
+      username:
+        type: string
+    type: object
   types.Item:
     properties:
       buying_price:
@@ -91,6 +106,28 @@ definitions:
         type: string
       username:
         type: string
+    type: object
+  types.SaleOrder:
+    properties:
+      customer_id:
+        type: integer
+      grand_total:
+        type: integer
+      id:
+        type: integer
+      sub_total:
+        type: integer
+    type: object
+  types.SaleOrderItem:
+    properties:
+      id:
+        type: integer
+      item_id:
+        type: integer
+      quantity:
+        type: integer
+      sale_order_id:
+        type: integer
     type: object
   types.Vendor:
     properties:
@@ -228,6 +265,128 @@ paths:
       summary: Update a category
       tags:
       - categories
+  /customer:
+    get:
+      description: Get a list of customers or a specific customer by ID
+      parameters:
+      - description: Customer ID
+        in: query
+        name: customerID
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/types.Customer'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get customers
+      tags:
+      - customers
+    post:
+      consumes:
+      - application/json
+      description: Create a new customer with the provided details
+      parameters:
+      - description: Customer
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/types.Customer'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/types.Customer'
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Create a new customer
+      tags:
+      - customers
+  /customer/{customerID}:
+    delete:
+      description: Delete an customer by ID
+      parameters:
+      - description: Customer ID
+        in: path
+        name: customerID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Customer deleted successfully
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Customer not found
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Delete an customer
+      tags:
+      - customers
+    put:
+      consumes:
+      - application/json
+      description: Update an customer with the provided details
+      parameters:
+      - description: Customer ID
+        in: path
+        name: customerID
+        required: true
+        type: integer
+      - description: Customer
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/types.Customer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.Customer'
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Update an customer
+      tags:
+      - customers
   /item:
     get:
       description: Get a list of items or a specific item by ID
@@ -406,6 +565,251 @@ paths:
       summary: Register new user
       tags:
       - auth
+  /sale_order:
+    get:
+      description: Get a list of sale orders or a specific sale order by ID
+      parameters:
+      - description: Sale Order ID
+        in: query
+        name: sale_orderID
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/types.SaleOrder'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get sale orders
+      tags:
+      - sale_orders
+    post:
+      consumes:
+      - application/json
+      description: Create a new sale order with the provided details
+      parameters:
+      - description: Sale Order
+        in: body
+        name: sale_order
+        required: true
+        schema:
+          $ref: '#/definitions/types.SaleOrder'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/types.SaleOrder'
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Create a new sale order
+      tags:
+      - sale_orders
+  /sale_order/{sale_orderID}:
+    delete:
+      description: Delete an sale order by ID
+      parameters:
+      - description: Sale Order ID
+        in: path
+        name: sale_orderID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sale Order deleted successfully
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Sale Order not found
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Delete an sale order
+      tags:
+      - sale_orders
+    put:
+      consumes:
+      - application/json
+      description: Update an sale order with the provided details
+      parameters:
+      - description: Sale Order ID
+        in: path
+        name: sale_orderID
+        required: true
+        type: integer
+      - description: Sale Order
+        in: body
+        name: sale_order
+        required: true
+        schema:
+          $ref: '#/definitions/types.SaleOrder'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.SaleOrder'
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Update an sale order
+      tags:
+      - sale_orders
+  /sale_order_item:
+    get:
+      description: Get a list of sale order items or a specific sale order item by
+        ID
+      parameters:
+      - description: Sale Order Item ID
+        in: query
+        name: sale_order_itemID
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/types.SaleOrderItem'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get sale order items
+      tags:
+      - sale_order_items
+    post:
+      consumes:
+      - application/json
+      description: Create a new sale order item with the provided details
+      parameters:
+      - description: Sale Order Item
+        in: body
+        name: sale_order_item
+        required: true
+        schema:
+          $ref: '#/definitions/types.SaleOrderItem'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/types.SaleOrderItem'
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Create a new sale order item
+      tags:
+      - sale_order_items
+  /sale_order_item/{sale_order_itemID}:
+    delete:
+      description: Delete an sale order item by ID
+      parameters:
+      - description: Sale Order Item ID
+        in: path
+        name: sale_order_itemID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sale Order Item deleted successfully
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Sale Order Item not found
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Delete an sale order item
+      tags:
+      - sale_order_items
+    put:
+      consumes:
+      - application/json
+      description: Update an sale order item with the provided details
+      parameters:
+      - description: Sale Order Item ID
+        in: path
+        name: sale_order_itemID
+        required: true
+        type: integer
+      - description: Sale Order Item
+        in: body
+        name: sale_order_item
+        required: true
+        schema:
+          $ref: '#/definitions/types.SaleOrderItem'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.SaleOrderItem'
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Update an sale order item
+      tags:
+      - sale_order_items
   /vendor:
     get:
       description: Get a list of vendors or a specific vendor by ID

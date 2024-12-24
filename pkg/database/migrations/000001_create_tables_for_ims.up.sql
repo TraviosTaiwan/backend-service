@@ -23,7 +23,7 @@ CREATE TABLE users (
 -- Customer table
 CREATE TABLE customers (
     id SERIAL PRIMARY KEY,
-    phone_number VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(255) UNIQUE NOT NULL,
     platform VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -73,9 +73,6 @@ CREATE TABLE items (
 CREATE TABLE sale_orders (
     id SERIAL PRIMARY KEY,
     customer_id INT NOT NULL,
-    quantity INT NOT NULL,
-    sub_total INT NOT NULL,
-    grand_total INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES customers(id)

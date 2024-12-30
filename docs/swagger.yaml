@@ -42,6 +42,13 @@ definitions:
       user:
         $ref: '#/definitions/models.User'
     type: object
+  types.CartItem:
+    properties:
+      item_id:
+        type: integer
+      quantity:
+        type: integer
+    type: object
   types.Category:
     properties:
       description:
@@ -84,6 +91,8 @@ definitions:
         type: integer
       selling_price:
         type: integer
+      tag:
+        type: string
       vendor_id:
         type: integer
     type: object
@@ -111,12 +120,10 @@ definitions:
     properties:
       customer_id:
         type: integer
-      grand_total:
-        type: integer
       id:
         type: integer
-      sub_total:
-        type: integer
+      remark:
+        type: string
     type: object
   types.SaleOrderItem:
     properties:
@@ -128,6 +135,21 @@ definitions:
         type: integer
       sale_order_id:
         type: integer
+    type: object
+  types.SaleOrderRequest:
+    properties:
+      cart_items:
+        items:
+          $ref: '#/definitions/types.CartItem'
+        type: array
+      customer_address:
+        type: string
+      customer_name:
+        type: string
+      customer_phone:
+        type: string
+      remark:
+        type: string
     type: object
   types.Vendor:
     properties:
@@ -143,6 +165,21 @@ definitions:
 info:
   contact: {}
 paths:
+  /anonymous-token:
+    get:
+      description: Generate a temporary anonymous token valid for 1 hour
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get anonymous token
+      tags:
+      - auth
   /category:
     get:
       description: Get a list of categories or a specific category by ID
@@ -509,6 +546,31 @@ paths:
       summary: Update an item
       tags:
       - items
+  /item/tag/{tag}:
+    get:
+      description: Get an item by tags
+      parameters:
+      - description: Tag
+        in: path
+        name: tag
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.Item'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get item by tags
+      tags:
+      - items
   /login:
     post:
       consumes:
@@ -687,6 +749,36 @@ paths:
       summary: Update an sale order
       tags:
       - sale_orders
+  /sale_order/frontend:
+    post:
+      consumes:
+      - application/json
+      description: Create a new sale order with customer info and cart items
+      parameters:
+      - description: Sale Order Request
+        in: body
+        name: sale_order
+        required: true
+        schema:
+          $ref: '#/definitions/types.SaleOrderRequest'
+      - description: Anonymous token (optional)
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/types.SaleOrder'
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+      summary: Create a new sale order from frontend
+      tags:
+      - sale_orders
   /sale_order_item:
     get:
       description: Get a list of sale order items or a specific sale order item by
@@ -808,6 +900,33 @@ paths:
       security:
       - Bearer: []
       summary: Update an sale order item
+      tags:
+      - sale_order_items
+  /sale_order_item/sale_order:
+    get:
+      description: Get a list of sale order items by sale order ID
+      parameters:
+      - description: Sale Order ID
+        in: query
+        name: sale_order_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/types.SaleOrderItem'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Get sale order items by sale order ID
       tags:
       - sale_order_items
   /vendor:

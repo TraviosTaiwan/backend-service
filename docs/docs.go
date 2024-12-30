@@ -15,6 +15,29 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/anonymous-token": {
+            "get": {
+                "description": "Generate a temporary anonymous token valid for 1 hour",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Get anonymous token",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/category": {
             "get": {
                 "security": [
@@ -492,6 +515,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/item/tag/{tag}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get an item by tags",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "items"
+                ],
+                "summary": "Get item by tags",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Tag",
+                        "name": "tag",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.Item"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/item/{itemID}": {
             "put": {
                 "security": [
@@ -771,6 +834,52 @@ const docTemplate = `{
                 }
             }
         },
+        "/sale_order/frontend": {
+            "post": {
+                "description": "Create a new sale order with customer info and cart items",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sale_orders"
+                ],
+                "summary": "Create a new sale order from frontend",
+                "parameters": [
+                    {
+                        "description": "Sale Order Request",
+                        "name": "sale_order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.SaleOrderRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Anonymous token (optional)",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/types.SaleOrder"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/sale_order/{sale_orderID}": {
             "put": {
                 "security": [
@@ -953,6 +1062,49 @@ const docTemplate = `{
                         "description": "Invalid input",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/sale_order_item/sale_order": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get a list of sale order items by sale order ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sale_order_items"
+                ],
+                "summary": "Get sale order items by sale order ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Sale Order ID",
+                        "name": "sale_order_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/types.SaleOrderItem"
+                            }
                         }
                     },
                     "401": {
@@ -1327,6 +1479,17 @@ const docTemplate = `{
                 }
             }
         },
+        "types.CartItem": {
+            "type": "object",
+            "properties": {
+                "item_id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
         "types.Category": {
             "type": "object",
             "properties": {
@@ -1391,6 +1554,9 @@ const docTemplate = `{
                 "selling_price": {
                     "type": "integer"
                 },
+                "tag": {
+                    "type": "string"
+                },
                 "vendor_id": {
                     "type": "integer"
                 }
@@ -1433,14 +1599,11 @@ const docTemplate = `{
                 "customer_id": {
                     "type": "integer"
                 },
-                "grand_total": {
-                    "type": "integer"
-                },
                 "id": {
                     "type": "integer"
                 },
-                "sub_total": {
-                    "type": "integer"
+                "remark": {
+                    "type": "string"
                 }
             }
         },
@@ -1458,6 +1621,29 @@ const docTemplate = `{
                 },
                 "sale_order_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "types.SaleOrderRequest": {
+            "type": "object",
+            "properties": {
+                "cart_items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.CartItem"
+                    }
+                },
+                "customer_address": {
+                    "type": "string"
+                },
+                "customer_name": {
+                    "type": "string"
+                },
+                "customer_phone": {
+                    "type": "string"
+                },
+                "remark": {
+                    "type": "string"
                 }
             }
         },

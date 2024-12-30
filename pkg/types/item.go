@@ -12,6 +12,7 @@ type Item struct {
 	ImageUrl     string `json:"image_url"`
 	BuyingPrice  int    `json:"buying_price"`
 	SellingPrice int    `json:"selling_price"`
+	Tag          string `json:"tag"`
 }
 
 func (item Item) ValidateItem() error {

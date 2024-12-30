@@ -7,6 +7,7 @@ import (
 
 type IItemRepository interface {
 	GetItems(itemID uint) []models.Item
+	GetItemByTag(tag string) ([]models.Item, error)
 	CreateItem(item *models.Item) error
 	UpdateItem(item *models.Item) error
 	DeleteItem(itemID uint) error
@@ -14,6 +15,7 @@ type IItemRepository interface {
 
 type IItemService interface {
 	GetItems(itemID uint) ([]types.Item, error)
+	GetItemByTag(tag string) ([]types.Item, error)
 	CreateItem(item *models.Item) error
 	UpdateItem(item *models.Item) error
 	DeleteItem(itemID uint) error

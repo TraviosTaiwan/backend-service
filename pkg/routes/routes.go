@@ -22,7 +22,6 @@ func InitRoutes(e *echo.Echo) {
 	protected := traviosGroup.Group("")
 	protected.Use(middlewares.AuthMiddleware)
 
-	// TODO: Need to update to use Admin/Manager guard here
 	CategoryRoutes(protected)
 	VendorRoutes(protected)
 	ItemRoutes(protected)

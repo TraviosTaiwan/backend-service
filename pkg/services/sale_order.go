@@ -28,6 +28,7 @@ func (service *SaleOrderService) GetSaleOrders(saleOrderID uint) ([]types.SaleOr
 		allSaleOrders = append(allSaleOrders, types.SaleOrder{
 			ID:         val.ID,
 			CustomerID: val.CustomerID,
+			Remark:     val.Remark,
 		})
 	}
 	return allSaleOrders, nil

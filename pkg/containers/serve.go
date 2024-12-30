@@ -17,6 +17,8 @@ func Serve(e *echo.Echo) {
 	config.SetConfig()
 	db := database.GetDB()
 
+	// TODO: Add a route to create new sale order from the webapp muahodl.com
+
 	// Repositories
 	userRepository := repositories.UserDBInstance(db)
 	categoryRepository := repositories.CategoryDBInstance(db)

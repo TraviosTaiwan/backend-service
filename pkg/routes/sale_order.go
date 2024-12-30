@@ -10,4 +10,5 @@ func SaleOrderRoutes(group *echo.Group) {
 	group.GET("/sale_order", controllers.GetSaleOrders)
 	group.PUT("/sale_order/:sale_orderID", controllers.UpdateSaleOrder)
 	group.DELETE("/sale_order/:sale_orderID", controllers.DeleteSaleOrder)
+	group.POST("/sale_order/frontend", controllers.CreateSaleOrderFromFrontend)
 }

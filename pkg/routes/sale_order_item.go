@@ -8,6 +8,7 @@ import (
 func SaleOrderItemRoutes(group *echo.Group) {
 	group.POST("/sale_order_item", controllers.CreateSaleOrderItem)
 	group.GET("/sale_order_item", controllers.GetSaleOrderItems)
+	group.GET("/sale_order_item/sale_order", controllers.GetSaleOrderItemsBySaleOrderID)
 	group.PUT("/sale_order_item/:sale_order_itemID", controllers.UpdateSaleOrderItem)
 	group.DELETE("/sale_order_item/:sale_order_itemID", controllers.DeleteSaleOrderItem)
 }

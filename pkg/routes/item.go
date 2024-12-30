@@ -8,6 +8,7 @@ import (
 func ItemRoutes(group *echo.Group) {
 	group.POST("/item", controllers.CreateItem)
 	group.GET("/item", controllers.GetItems)
+	group.GET("/item/tag/:tag", controllers.GetItemByTag)
 	group.PUT("/item/:itemID", controllers.UpdateItem)
 	group.DELETE("/item/:itemID", controllers.DeleteItem)
 }

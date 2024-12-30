@@ -39,6 +39,14 @@ func (repo *itemRepo) GetItems(itemID uint) []models.Item {
 	return items
 }
 
+func (repo *itemRepo) GetItemByTag(tag string) ([]models.Item, error) {
+	var items []models.Item
+	if err := repo.db.Where("tag LIKE ?", "%"+tag+"%").Find(&items).Error; err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 func (repo *itemRepo) UpdateItem(item *models.Item) error {
 	if err := repo.db.Save(item).Error; err != nil {
 		return err

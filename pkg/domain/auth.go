@@ -10,6 +10,7 @@ type IAuthService interface {
 	Register(req *types.RegisterRequest) (*types.AuthResponse, error)
 	GenerateToken(user *models.User) (string, error)
 	ValidateToken(token string) (bool, error)
+	GenerateAnonymousToken() (string, error)
 }
 
 type IUserRepository interface {

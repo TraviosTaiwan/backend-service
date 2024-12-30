@@ -35,6 +35,23 @@ func (service *SaleOrderItemService) GetSaleOrderItems(saleOrderItemID uint) ([]
 	return allSaleOrderItems, nil
 }
 
+func (service *SaleOrderItemService) GetSaleOrderItemsBySaleOrderID(saleOrderID uint) ([]types.SaleOrderItem, error) {
+	var allSaleOrderItems []types.SaleOrderItem
+	saleOrderItems := service.repo.GetSaleOrderItemsBySaleOrderID(saleOrderID)
+	if len(saleOrderItems) == 0 {
+		return nil, errors.New("SaleOrderItem not found")
+	}
+	for _, val := range saleOrderItems {
+		allSaleOrderItems = append(allSaleOrderItems, types.SaleOrderItem{
+			ID:          val.ID,
+			SaleOrderID: val.SaleOrderID,
+			ItemID:      val.ItemID,
+			Quantity:    val.Quantity,
+		})
+	}
+	return allSaleOrderItems, nil
+}
+
 func (service *SaleOrderItemService) CreateSaleOrderItem(saleOrderItemRequest *models.SaleOrderItem) error {
 	return service.repo.CreateSaleOrderItem(saleOrderItemRequest)
 }

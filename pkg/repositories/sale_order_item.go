@@ -39,6 +39,15 @@ func (repo *saleOrderItemRepo) GetSaleOrderItems(saleOrderItemID uint) []models.
 	return saleOrderItems
 }
 
+func (repo *saleOrderItemRepo) GetSaleOrderItemsBySaleOrderID(saleOrderID uint) []models.SaleOrderItem {
+	var saleOrderItems []models.SaleOrderItem
+	err := repo.db.Where("sale_order_id = ?", saleOrderID).Find(&saleOrderItems).Error
+	if err != nil {
+		return []models.SaleOrderItem{}
+	}
+	return saleOrderItems
+}
+
 func (repo *saleOrderItemRepo) UpdateSaleOrderItem(saleOrderItem *models.SaleOrderItem) error {
 	if err := repo.db.Save(saleOrderItem).Error; err != nil {
 		return err

@@ -7,6 +7,7 @@ import (
 
 type ISaleOrderItemRepository interface {
 	GetSaleOrderItems(saleOrderItemID uint) []models.SaleOrderItem
+	GetSaleOrderItemsBySaleOrderID(saleOrderID uint) []models.SaleOrderItem
 	CreateSaleOrderItem(saleOrderItem *models.SaleOrderItem) error
 	UpdateSaleOrderItem(saleOrderItem *models.SaleOrderItem) error
 	DeleteSaleOrderItem(saleOrderItemID uint) error
@@ -14,6 +15,7 @@ type ISaleOrderItemRepository interface {
 
 type ISaleOrderItemService interface {
 	GetSaleOrderItems(saleOrderItemID uint) ([]types.SaleOrderItem, error)
+	GetSaleOrderItemsBySaleOrderID(saleOrderID uint) ([]types.SaleOrderItem, error)
 	CreateSaleOrderItem(saleOrderItem *models.SaleOrderItem) error
 	UpdateSaleOrderItem(saleOrderItem *models.SaleOrderItem) error
 	DeleteSaleOrderItem(saleOrderItemID uint) error

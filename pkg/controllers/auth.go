@@ -68,3 +68,20 @@ func Register(c echo.Context) error {
 
 	return c.JSON(http.StatusCreated, resp)
 }
+
+// @Summary Get anonymous token
+// @Description Generate a temporary anonymous token valid for 1 hour
+// @Tags auth
+// @Produce json
+// @Success 200 {object} map[string]string
+// @Router /anonymous-token [get]
+func GetAnonymousToken(c echo.Context) error {
+	token, err := AuthService.GenerateAnonymousToken()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, "Failed to generate token")
+	}
+
+	return c.JSON(http.StatusOK, map[string]string{
+		"token": token,
+	})
+}

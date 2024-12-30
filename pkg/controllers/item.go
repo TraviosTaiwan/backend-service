@@ -49,6 +49,7 @@ func CreateItem(e echo.Context) error {
 		Quantity:     reqItem.Quantity,
 		CreatedAt:    time.Now(),
 		UpdatedAt:    time.Now(),
+		Tag:          reqItem.Tag,
 	}
 	if err := ItemService.CreateItem(item); err != nil {
 		return e.JSON(http.StatusInternalServerError, err.Error())
@@ -68,6 +69,24 @@ func CreateItem(e echo.Context) error {
 func GetItems(e echo.Context) error {
 	itemID, _ := strconv.Atoi(e.QueryParam("itemID"))
 	items, err := ItemService.GetItems(uint(itemID))
+	if err != nil {
+		return e.JSON(http.StatusNotFound, err.Error())
+	}
+	return e.JSON(http.StatusOK, items)
+}
+
+// @Summary Get item by tags
+// @Description Get an item by tags
+// @Tags items
+// @Produce json
+// @Security Bearer
+// @Param tag path string true "Tag"
+// @Success 200 {object} types.Item
+// @Failure 401 {string} string "Unauthorized"
+// @Router /item/tag/{tag} [get]
+func GetItemByTag(e echo.Context) error {
+	tag := e.Param("tag")
+	items, err := ItemService.GetItemByTag(tag)
 	if err != nil {
 		return e.JSON(http.StatusNotFound, err.Error())
 	}
@@ -105,6 +124,7 @@ func UpdateItem(e echo.Context) error {
 		Description:  reqItem.Description,
 		ImageUrl:     reqItem.ImageUrl,
 		Quantity:     reqItem.Quantity,
+		Tag:         reqItem.Tag,
 	}
 	if err := ItemService.UpdateItem(item); err != nil {
 		return e.JSON(http.StatusInternalServerError, err.Error())

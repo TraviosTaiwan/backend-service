@@ -66,6 +66,24 @@ func GetSaleOrderItems(e echo.Context) error {
 	return e.JSON(http.StatusOK, saleOrderItems)
 }
 
+// @Summary Get sale order items by sale order ID
+// @Description Get a list of sale order items by sale order ID
+// @Tags sale_order_items
+// @Produce json
+// @Security Bearer
+// @Param sale_order_id query int true "Sale Order ID"
+// @Success 200 {array} types.SaleOrderItem
+// @Failure 401 {string} string "Unauthorized"
+// @Router /sale_order_item/sale_order [get]
+func GetSaleOrderItemsBySaleOrderID(e echo.Context) error {
+	saleOrderID, _ := strconv.Atoi(e.QueryParam("sale_order_id"))
+	saleOrderItems, err := SaleOrderItemService.GetSaleOrderItemsBySaleOrderID(uint(saleOrderID))
+	if err != nil {
+		return e.JSON(http.StatusNotFound, err.Error())
+	}
+	return e.JSON(http.StatusOK, saleOrderItems)
+}
+
 // @Summary Update an sale order item
 // @Description Update an sale order item with the provided details
 // @Tags sale_order_items

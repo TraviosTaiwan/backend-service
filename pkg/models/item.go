@@ -16,4 +16,5 @@ type Item struct {
 	UpdatedAt    time.Time `gorm:"autoUpdateTime" json:"updated_at"`
 	Category     Category  `gorm:"foreignKey:CategoryID"`
 	Vendor       Vendor    `gorm:"foreignKey:VendorID"`
+	Tag          string    
 }

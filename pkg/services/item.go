@@ -35,6 +35,33 @@ func (service *ItemService) GetItems(itemID uint) ([]types.Item, error) {
 			SellingPrice: val.SellingPrice,
 			Description:  val.Description,
 			ImageUrl:     val.ImageUrl,
+			Tag:          val.Tag,
+		})
+	}
+	return allItems, nil
+}
+
+func (service *ItemService) GetItemByTag(tag string) ([]types.Item, error) {
+	var allItems []types.Item
+	items, err := service.repo.GetItemByTag(tag)
+	if err != nil {
+		return nil, err
+	}
+	if len(items) == 0 {
+		return nil, errors.New("Items not found")
+	}
+	for _, val := range items {
+		allItems = append(allItems, types.Item{
+			ID:           val.ID,
+			Name:         val.Name,
+			CategoryID:   val.CategoryID,
+			VendorID:     val.VendorID,
+			Quantity:     val.Quantity,
+			BuyingPrice:  val.BuyingPrice,
+			SellingPrice: val.SellingPrice,
+			Description:  val.Description,
+			ImageUrl:     val.ImageUrl,
+			Tag:          val.Tag,
 		})
 	}
 	return allItems, nil

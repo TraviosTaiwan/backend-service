@@ -1,6 +1,6 @@
 module github.com/iwachan14736/travios-backend-service
 
-go1.23
+go 1.23
 
 require (
 	github.com/Go-ozzo/ozzo-validation v3.6.0+incompatible

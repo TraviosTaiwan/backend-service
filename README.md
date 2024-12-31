@@ -8,7 +8,7 @@ Backend service for Travios
 
 ### Prerequisites
 
-- Go 1.23.3
+- Go 1.21
 - Docker
 
 ### Create local database

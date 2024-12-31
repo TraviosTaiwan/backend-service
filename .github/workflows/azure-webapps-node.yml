@@ -1,0 +1,32 @@
+trigger:
+  - main
+
+variables:
+  GO_VERSION: '1.23.3'
+  GOPATH: '$(Pipeline.Workspace)/go'
+  GOBIN:  '$(GOPATH)/bin'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: GoTool@0
+  inputs:
+    version: '$(GO_VERSION)'
+  displayName: 'Install Go'
+
+- script: |
+    go mod download
+    go mod tidy
+  displayName: 'Get dependencies'
+
+- script: |
+    go build -o main cmd/main.go
+  displayName: 'Build'
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'Your-Azure-Subscription'
+    appName: 'travios-backend'
+    package: '$(System.DefaultWorkingDirectory)'
+    runtimeStack: 'GO|$(GO_VERSION)'
